@@ -14,7 +14,7 @@ require_once 'libs/captcha/captcha.php';
 
 session_start();
 
-#angularJS ajax POST hack...
+#ajax POST hack...
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST)) {
 	$_POST = json_decode(file_get_contents('php://input'), true);
 }
