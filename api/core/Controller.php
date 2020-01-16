@@ -127,14 +127,14 @@ class Controller {
 	 * @param array $data
 	 */
 	public function sendResponse($status, $data) {
-		$response = array('status' => $status);
+		$response = null;
 
 		if ($status == 1) {
 			if (!is_null($data)) {
-				$response['data'] = $data;
+				$response = $data;
 			}
 		} else {
-			$response['error'] = $data;
+			$response = array('error' => $data);
 		}
 
 		$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '*';

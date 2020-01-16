@@ -29,5 +29,14 @@ class ErrorCodes {
 	const EMAIL_NOT_FOUND = 'email_not_found';
 	const INVALID_LOGIN = 'invalid_login';
 	const INVALID_OR_EXPIRED_TOKEN = 'invalid_or_expired_token';
+
+	/**
+	 * Returns all class constants
+	 * @return Array
+	 */
+	public static function getConstants() {
+		$reflectionClass = new ReflectionClass(static::class);
+		return $reflectionClass->getConstants();
+	}
 	
 }

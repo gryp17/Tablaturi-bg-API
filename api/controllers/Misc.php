@@ -20,6 +20,9 @@ class Misc extends Controller {
 					'message' => 'required',
 					'captcha' => 'matches-captcha'
 				)
+			),
+			'getErrorCodes' => array(
+				'required_role' => self::PUBLIC_ACCESS
 			)
 		);
 
@@ -52,6 +55,14 @@ class Misc extends Controller {
 		} else {
 			$this->sendResponse(0, ErrorCodes::EMAIL_ERROR);
 		}
+	}
+
+	/**
+	 * Returns the error codes mapping
+	 */
+	public function getErrorCodes() {
+		$codes = ErrorCodes::getConstants();
+		$this->sendResponse(1, $codes);
 	}
 
 }
