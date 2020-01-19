@@ -12,9 +12,9 @@ class User extends Controller {
 			'login' => array(
 				'required_role' => self::PUBLIC_ACCESS,
 				'params' => array(
-					'login_username' => 'required',
-					'login_password' => 'required',
-					'login_remember_me' => 'in[1,0,]' //(1 or 0 or empty space) boolean?
+					'username' => 'required',
+					'password' => 'required',
+					'remember_me' => 'in[1,0,]' //(1 or 0 or empty space) boolean?
 				)
 			),
 			'updatePassword' => array(
@@ -93,14 +93,14 @@ class User extends Controller {
 	 */
 	public function login() {
 		$user_model = $this->load_model('UserModel');
-		$data = $user_model->checkLogin($this->params['login_username'], $this->params['login_password']);
+		$data = $user_model->checkLogin($this->params['username'], $this->params['password']);
 
 		if ($data === false) {
-			$this->sendResponse(0, array('field' => 'login_password', 'error_code' => ErrorCodes::INVALID_LOGIN));
+			$this->sendResponse(0, array('field' => 'password', 'error_code' => ErrorCodes::INVALID_LOGIN));
 		} else {
 
 			//if the remember me option is set to true - keep the user session for 90 days	
-			if (isset($this->params['login_remember_me']) && $this->params['login_remember_me']) {
+			if (isset($this->params['remember_me']) && $this->params['remember_me']) {
 				setcookie(session_name(), session_id(), strtotime('+90 days'), '/');
 			}
 			//otherwise keep until the browser is closed (default)
