@@ -12,7 +12,7 @@ class PasswordReset extends Controller {
 			'sendPasswordResetRequest' => array(
 				'required_role' => self::PUBLIC_ACCESS,
 				'params' => array(
-					'forgotten_password_email' => array('required', 'valid-email')
+					'email' => array('required', 'valid-email')
 				)
 			),
 			'checkPasswordResetHash' => array(
@@ -37,22 +37,22 @@ class PasswordReset extends Controller {
 	 */
 	public function sendPasswordResetRequest() {
 		$user_model = $this->load_model('UserModel');	
-		$user_data = $user_model->getUserByEmail($this->params['forgotten_password_email']);
+		$user_data = $user_model->getUserByEmail($this->params['email']);
 		
 		if($user_data !== null){
-			$password_reset = $this->generatePasswordResetLink($user_data['ID'], $this->params['forgotten_password_email']);
+			$password_reset = $this->generatePasswordResetLink($user_data['ID'], $this->params['email']);
 			
 			$password_reset_model = $this->load_model('PasswordResetModel');
 			$password_reset_model->insertHash($user_data['ID'], $password_reset['hash']);
 			
-			if(Utils::sendPasswordResetEmail($this->params['forgotten_password_email'], $password_reset['link'])){
+			if(Utils::sendPasswordResetEmail($this->params['email'], $password_reset['link'])){
 				$this->sendResponse(1, true);
 			} else {
 				$this->sendResponse(0, ErrorCodes::EMAIL_ERROR);
 			}
 			
 		}else{
-			$this->sendResponse(0, array('field' => 'forgotten_password_email', 'error_code' => ErrorCodes::EMAIL_NOT_FOUND));
+			$this->sendResponse(0, array('field' => 'email', 'error_code' => ErrorCodes::EMAIL_NOT_FOUND));
 		}
 	}
 	
