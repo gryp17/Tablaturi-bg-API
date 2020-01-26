@@ -83,7 +83,7 @@ class PasswordReset extends Controller {
 		if($password_reset_model->checkHash($this->params['user_id'], $this->params['hash'])){
 			$this->sendResponse(1, true);
 		}else{
-			$this->sendResponse(0, false);
+			$this->sendResponse(1, false);
 		}
 	}
 
