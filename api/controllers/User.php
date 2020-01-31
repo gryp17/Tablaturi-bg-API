@@ -35,13 +35,13 @@ class User extends Controller {
 			'signup' => array(
 				'required_role' => self::PUBLIC_ACCESS,
 				'params' => array(
-					'signup_username' => array('min-6', 'max-20', 'valid-characters', 'unique[username]'),
-					'signup_email' => array('valid-email', 'unique[email]'),
-					'signup_password' => array('min-6', 'max-20', 'strong-password'),
-					'signup_repeat_password' => 'matches[signup_password]',
-					'signup_birthday' => 'date',
-					'signup_gender' => 'in[M,F]',
-					'signup_captcha' => 'matches-captcha'
+					'username' => array('min-6', 'max-20', 'valid-characters', 'unique[username]'),
+					'email' => array('valid-email', 'unique[email]'),
+					'password' => array('min-6', 'max-20', 'strong-password'),
+					'repeat_password' => 'matches[password]',
+					'birthday' => 'date',
+					'gender' => 'in[M,F]',
+					'captcha' => 'matches-captcha'
 				)
 			),
 			'getUser' => array(
@@ -165,23 +165,23 @@ class User extends Controller {
 		$user_model = $this->load_model('UserModel');
 		
 		//set the correct default avatar
-		if($this->params['signup_gender'] === 'M'){
+		if($this->params['gender'] === 'M'){
 			$avatar = 'default-m.jpg';
 		}else{
 			$avatar = 'default-f.jpg';
 		}
 		
-		$user_id = $user_model->insertUser($this->params['signup_username'], $this->params['signup_password'], $this->params['signup_email'], $this->params['signup_birthday'], $this->params['signup_gender'], $avatar, 'user');
+		$user_id = $user_model->insertUser($this->params['username'], $this->params['password'], $this->params['email'], $this->params['birthday'], $this->params['gender'], $avatar, 'user');
 
 		if($user_id !== null){
-			$activation = $this->generateActivationLink($user_id, $this->params['signup_email']);
+			$activation = $this->generateActivationLink($user_id, $this->params['email']);
 
 			//insert the activation data into the database
 			$user_activation_model = $this->load_model('UserActivationModel');
 			$user_activation_model->insertHash($user_id, $activation['hash']);
 			
 			//send the confirmation email
-			if (Utils::sendConfirmationEmail($this->params['signup_username'], $this->params['signup_email'], $activation['link'])) {
+			if (Utils::sendConfirmationEmail($this->params['username'], $this->params['email'], $activation['link'])) {
 				$this->sendResponse(1, true);
 			} else {
 				$this->sendResponse(0, ErrorCodes::EMAIL_ERROR);
