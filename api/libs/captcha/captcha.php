@@ -6,7 +6,7 @@
 //
 //  See readme.md for usage, demo, and licensing info
 //
-function simple_php_captcha($config = array()) {
+function simplePHPCaptcha($config = array()) {
 
 	// Check for GD library
 	if( !function_exists('gd_info') ) {
@@ -108,11 +108,7 @@ if( !function_exists('hex2rgb') ) {
 	}
 }
 
-// Draw the image
-if( isset($_GET['_CAPTCHA']) ) {
-
-	session_start();
-
+function sendCaptcha() {
 	$captcha_config = unserialize($_SESSION['_CAPTCHA']['config']);
 	if( !$captcha_config ) exit();
 
@@ -172,5 +168,4 @@ if( isset($_GET['_CAPTCHA']) ) {
 	// Output image
 	header("Content-type: image/png");
 	imagepng($captcha);
-
 }

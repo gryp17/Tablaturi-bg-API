@@ -10,7 +10,7 @@ class Misc extends Controller {
 		 */
 		$this->endpoints = array(
 			'generateCaptcha' => array(
-				'required_role' => self::PUBLIC_ACCESS,
+				'required_role' => self::PUBLIC_ACCESS
 			),
 			'contactUs' => array(
 				'required_role' => self::PUBLIC_ACCESS,
@@ -39,11 +39,8 @@ class Misc extends Controller {
 	 */
 	public function generateCaptcha() {
 		#captcha code
-		$_SESSION['captcha'] = simple_php_captcha();
-		#img source fix
-		$captchaImage = preg_replace('/.*?\/api/', 'api', $_SESSION['captcha']['image_src']);
-
-		$this->sendResponse(1, $captchaImage);
+		$_SESSION['captcha'] = simplePHPCaptcha();
+		sendCaptcha();
 	}
 
 	/**
