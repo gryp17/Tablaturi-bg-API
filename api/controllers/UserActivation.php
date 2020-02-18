@@ -37,10 +37,10 @@ class UserActivation extends Controller {
 			if($user_activation_model->activateUser($this->params['user_id'])){
 				$this->sendResponse(1, true);
 			}else{
-				$this->sendResponse(0, false);
+				$this->sendResponse(1, false);
 			}
 		}else{
-			$this->sendResponse(0, false);
+			$this->sendResponse(1, false);
 		}
 		
 	}
