@@ -182,7 +182,7 @@ class User extends Controller {
 			
 			//send the confirmation email
 			if (Utils::sendConfirmationEmail($this->params['username'], $this->params['email'], $activation['link'])) {
-				$this->sendResponse(1, true);
+				$this->sendResponse(1, array('success' => true));
 			} else {
 				$this->sendResponse(0, ErrorCodes::EMAIL_ERROR);
 			}
@@ -234,7 +234,7 @@ class User extends Controller {
 		#update the user data and reload the $_SESSION user
 		if ($user_model->updateUser($_SESSION['user']['ID'], $this->params['password'], $this->params['location'], $this->params['occupation'], $this->params['web'], $this->params['about_me'], $this->params['instrument'], $this->params['favourite_bands'], $new_avatar)) {
 			$_SESSION['user'] = $user_model->getUser($_SESSION['user']['ID']);
-			$this->sendResponse(1, true);
+			$this->sendResponse(1, array('success' => true));
 		}
 	}
 
