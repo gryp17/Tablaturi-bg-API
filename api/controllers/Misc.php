@@ -48,7 +48,7 @@ class Misc extends Controller {
 	 */
 	public function contactUs() {
 		if (Utils::sendContactUsEmail($this->params['username'], $this->params['email'], $this->params['message'])) {
-			$this->sendResponse(1, true);
+			$this->sendResponse(1, array('success' => true));
 		} else {
 			$this->sendResponse(0, ErrorCodes::EMAIL_ERROR);
 		}
