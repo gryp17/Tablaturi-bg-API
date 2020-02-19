@@ -4,6 +4,9 @@ RewriteEngine On
 #change the base when moving to another domain
 RewriteBase /Tablaturi-bg-API
 
+#redirect all API CDN calls to the CDN controller and transform the type/file parameters
+RewriteRule ^API/CDN/(.*)/(.*)$ index.php?url=CDN/file&type=$1&file=$2 [QSA,NC,L]
+
 #redirect all API calls to the index.php
 RewriteRule ^API/(.*)$ index.php?url=$1 [QSA,NC,L]
 
