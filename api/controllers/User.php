@@ -224,15 +224,22 @@ class User extends Controller {
 	 */
 	public function updateUser() {
 		$user_model = $this->load_model('UserModel');
+		$password = isset($this->params['password']) ? $this->params['password'] : '';
+		$location = isset($this->params['location']) ? $this->params['location'] : '';
+		$occupation = isset($this->params['occupation']) ? $this->params['occupation'] : '';
+		$web = isset($this->params['web']) ? $this->params['web'] : '';
+		$about_me = isset($this->params['about_me']) ? $this->params['about_me'] : '';
+		$instrument = isset($this->params['instrument']) ? $this->params['instrument'] : '';
+		$favourite_bands = isset($this->params['favourite_bands']) ? $this->params['favourite_bands'] : '';
 		$new_avatar = '';
 
 		#if there is a submited avatar
-		if ($_FILES['avatar']['error'] !== 4) {
+		if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] !== 4) {
 			$new_avatar = $this->uploadUserAvatar('avatar', $_SESSION['user']['ID'], $_SESSION['user']['photo']);
 		}
 
 		#update the user data and reload the $_SESSION user
-		if ($user_model->updateUser($_SESSION['user']['ID'], $this->params['password'], $this->params['location'], $this->params['occupation'], $this->params['web'], $this->params['about_me'], $this->params['instrument'], $this->params['favourite_bands'], $new_avatar)) {
+		if ($user_model->updateUser($_SESSION['user']['ID'], $password, $location, $occupation, $web, $about_me, $instrument, $favourite_bands, $new_avatar)) {
 			$_SESSION['user'] = $user_model->getUser($_SESSION['user']['ID']);
 			$this->sendResponse(1, array('success' => true));
 		}
