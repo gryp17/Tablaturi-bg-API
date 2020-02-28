@@ -17,12 +17,6 @@ class UserComment extends Controller {
 					'offset' => 'int'
 				)
 			),
-			'getTotalUserComments' => array(
-				'required_role' => self::LOGGED_IN_USER,
-				'params' => array(
-					'user_id' => 'int'
-				)
-			),
 			'addUserComment' => array(
 				'required_role' => self::LOGGED_IN_USER,
 				'params' => array(
@@ -45,19 +39,10 @@ class UserComment extends Controller {
 	 */
 	public function getUserComments() {
 		$user_comment_model = $this->load_model('UserCommentModel');
-		$data = $user_comment_model->getUserComments($this->params['user_id'], $this->params['limit'], $this->params['offset']);
+		$comments = $user_comment_model->getUserComments($this->params['user_id'], $this->params['limit'], $this->params['offset']);
+		$total = $user_comment_model->getTotalUserComments($this->params['user_id']);
 
-		$this->sendResponse(1, $data);
-	}
-
-	/**
-	 * Returns the total number of comments for the specified user id
-	 */
-	public function getTotalUserComments() {
-		$user_comment_model = $this->load_model('UserCommentModel');
-		$data = $user_comment_model->getTotalUserComments($this->params['user_id']);
-
-		$this->sendResponse(1, $data);
+		$this->sendResponse(1, array('results' => $comments, 'total' => $total));
 	}
 	
 	/**
