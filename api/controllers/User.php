@@ -71,12 +71,6 @@ class User extends Controller {
 					'limit' => 'int',
 					'offset' => 'int'
 				)
-			),
-			'getTotalSearchResults' => array(
-				'required_role' => self::LOGGED_IN_USER,
-				'params' => array(
-					'keyword' => array('required', 'min-3', 'max-50'),
-				)
 			)
 		);
 
@@ -277,19 +271,9 @@ class User extends Controller {
 	 */
 	public function search() {
 		$user_model = $this->load_model('UserModel');
-		$data = $user_model->search($this->params['keyword'], $this->params['limit'], $this->params['offset']);
+		$users = $user_model->search($this->params['keyword'], $this->params['limit'], $this->params['offset']);
+		$total = $user_model->getTotalSearchResults($this->params['keyword']);
 
-		$this->sendResponse(1, $data);
+		$this->sendResponse(1, array('results' => $users, 'total' => $total));
 	}
-
-	/**
-	 * Returns the total number of users that match the search
-	 */
-	public function getTotalSearchResults() {
-		$user_model = $this->load_model('UserModel');
-		$data = $user_model->getTotalSearchResults($this->params['keyword']);
-
-		$this->sendResponse(1, $data);
-	}
-
 }
