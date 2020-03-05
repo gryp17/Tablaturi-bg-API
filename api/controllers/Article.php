@@ -98,10 +98,10 @@ class Article extends Controller {
 	public function addArticle() {
 		$article_model = $this->load_model('ArticleModel');
 		
-		$article_image = $this->uploadArticleImage('image', $_SESSION['user']['ID']);
+		$article_image = $this->uploadArticleImage('image');
 		$id =  $article_model->addArticle($_SESSION['user']['ID'], $this->params['title'], $this->params['content'], $this->params['date'], $article_image, 0);
 		
-		$this->sendResponse(1, array('article_id' => $id));
+		$this->sendResponse(1, array('success' => true, 'article_id' => $id));
 	}
 	
 	/**
@@ -138,11 +138,10 @@ class Article extends Controller {
 		$extension = strtolower($matches[1]);
 		$extension = '.' . $extension;
 
-		$datetime = date('YmdHis');
+		$image = date('YmdHis') . mt_rand(0, 999999) . $extension;
 		
 		#upload the file to the server
-		move_uploaded_file($_FILES[$field_name]['tmp_name'], $articles_dir . $datetime . $extension);
-		$image = $datetime . $extension;
+		move_uploaded_file($_FILES[$field_name]['tmp_name'], $articles_dir . $image);
 		
 		return $image;
 	}
