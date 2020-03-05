@@ -2,6 +2,8 @@
 node_modules
 /dist
 /content/articles
+/content/avatars
+/content/tabs
 
 # local env files
 .env.local
