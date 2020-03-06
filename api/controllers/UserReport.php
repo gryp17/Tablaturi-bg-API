@@ -40,7 +40,7 @@ class UserReport extends Controller {
 			Utils::sendUserReportEmail($reported_user, $_SESSION['user'], $this->params['report']);
 		}
 		
-		$this->sendResponse(1, true);
+		$this->sendResponse(1, array('success' => true));
 	}
 	
 
