@@ -32,6 +32,19 @@ class ArticleModel {
 	}
 
 	/**
+	 * Returns the total number of articles
+	 * @return int
+	 */
+	public function getTotalArticles(){
+		$query = $this->connection->prepare('SELECT count(ID) AS total FROM article');
+		$query->execute();
+		
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		
+		return (int) $result['total'];
+	}
+
+	/**
 	 * Returns all articles from the specified date
 	 * @param string $date
 	 * @param int $limit

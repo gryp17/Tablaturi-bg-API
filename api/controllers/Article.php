@@ -64,8 +64,9 @@ class Article extends Controller {
 	 */
 	public function getArticles() {
 		$article_model = $this->load_model('ArticleModel');
-		$data = $article_model->getArticles($this->params['limit'], $this->params['offset']);
-		$this->sendResponse(1, $data);
+		$articles = $article_model->getArticles($this->params['limit'], $this->params['offset']);
+		$total = $article_model->getTotalArticles();
+		$this->sendResponse(1, array('results' => $articles, 'total' => $total));
 	}
 
 	/**
