@@ -113,7 +113,7 @@ class Article extends Controller {
 		$new_image = null;
 		
 		#if there is a submited image
-		if($_FILES['image']['error'] !== 4){
+		if(isset($_FILES['image']) && $_FILES['image']['error'] !== 4){
 			#delete the old article image
 			$article_data = $article_model->getArticle($this->params['id']);
 			$old_image = $article_data['picture'];
@@ -124,7 +124,7 @@ class Article extends Controller {
 		
 		$article_model->updateArticle($this->params['id'], $this->params['title'], $this->params['content'], $this->params['date'], $new_image);
 		
-		$this->sendResponse(1, true);
+		$this->sendResponse(1, array('success' => true, 'article_id' => $this->params['id']));
 	}
 	
 	/**
