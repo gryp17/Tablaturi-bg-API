@@ -17,12 +17,6 @@ class ArticleComment extends Controller {
 					'offset' => 'int'
 				)
 			),
-			'getTotalArticleComments' => array(
-				'required_role' => self::PUBLIC_ACCESS,
-				'params' => array(
-					'article_id' => 'int'
-				)
-			),
 			'addArticleComment' => array(
 				'required_role' => self::LOGGED_IN_USER,
 				'params' => array(
@@ -45,19 +39,10 @@ class ArticleComment extends Controller {
 	 */
 	public function getArticleComments() {
 		$article_comment_model = $this->load_model('ArticleCommentModel');
-		$data = $article_comment_model->getArticleComments($this->params['article_id'], $this->params['limit'], $this->params['offset']);
+		$comments = $article_comment_model->getArticleComments($this->params['article_id'], $this->params['limit'], $this->params['offset']);
+		$total = $article_comment_model->getTotalArticleComments($this->params['article_id']);
 
-		$this->sendResponse(1, $data);
-	}
-
-	/**
-	 * Returns the total number of comments for the specified article id
-	 */
-	public function getTotalArticleComments() {
-		$article_comment_model = $this->load_model('ArticleCommentModel');
-		$data = $article_comment_model->getTotalArticleComments($this->params['article_id']);
-
-		$this->sendResponse(1, $data);
+		$this->sendResponse(1, array('results' => $comments, 'total' => $total));
 	}
 
 	/**
@@ -85,7 +70,7 @@ class ArticleComment extends Controller {
 				}
 			}
 			
-			$this->sendResponse(1, $result);
+			$this->sendResponse(1, array('success' => true));
 		} else {
 			$this->sendResponse(0, ErrorCodes::DB_ERROR);
 		}
