@@ -299,7 +299,7 @@ class Tab extends Controller {
 		//on success give the user 10 reputation and return the inserted id
 		if($tab_id !== null){
 			$user_model->giveReputation($_SESSION['user']['ID'], 10);
-			$this->sendResponse(1, array('tab_id' => $tab_id));
+			$this->sendResponse(1, array('success' => true, 'tab_id' => $tab_id));
 		}else{
 			$this->sendResponse(0, ErrorCodes::DB_ERROR);
 		}
@@ -364,7 +364,7 @@ class Tab extends Controller {
 		
 		//update the tab info
 		if($tab_model->updateTab($this->params['tab_id'], $this->params['type'], $this->params['band'], $this->params['song'], $this->params['tab_type'], $content, $filename, $this->params['tunning'], $this->params['difficulty'])){
-			$this->sendResponse(1, true);
+			$this->sendResponse(1, array('success' => true, 'tab_id' => $this->params['tab_id']));
 		}else{
 			$this->sendResponse(1, ErrorCodes::DB_ERROR);
 		}
