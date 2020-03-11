@@ -274,7 +274,7 @@ class Tab extends Controller {
 		$tab_model = $this->load_model('TabModel');
 		$user_model = $this->load_model('UserModel');
 		$filename = null;
-		$content = isset($this->params['content']) ? $this->params['content'] : '';
+		$content = isset($this->params['content']) && $this->params['type'] !== 'gp' ? $this->params['content'] : '';
 				
 		//guitar pro tab
 		if($this->params['type'] === 'gp'){
@@ -311,7 +311,7 @@ class Tab extends Controller {
 	public function updateTab(){
 		$tab_model = $this->load_model('TabModel');
 		$filename = null;
-		$content = isset($this->params['content']) ? $this->params['content'] : '';
+		$content = isset($this->params['content']) && $this->params['type'] !== 'gp' ? $this->params['content'] : '';
 		
 		//get the current tab datas
 		$old_tab_data = $tab_model->getTab($this->params['tab_id']);
@@ -331,7 +331,7 @@ class Tab extends Controller {
 		//guitar pro tab
 		if($this->params['type'] === 'gp'){
 			//if there is a submited file or there is no set gp file path
-			if($_FILES['gp_file']['error'] !== 4 || $old_tab_data['path'] === null){
+			if((isset($_FILES['gp_file']) && $_FILES['gp_file']['error'] !== 4) || $old_tab_data['path'] === null){
 				
 				$content_check = Validator::checkParam('gp_file', null, array('required', 'valid-file-extensions[gp,gp3,gp4,gp5,gp6,gpx]', 'max-file-size-1000'), null);
 				if($content_check !== true){
