@@ -64,12 +64,6 @@ class Tab extends Controller {
 					'offset' => 'int'
 				)
 			),
-			'getTotalTabsByUploader' => array(
-				'required_role' => self::LOGGED_IN_USER,
-				'params' => array(
-					'uploader_id' => 'int'
-				)
-			),
 			'getTab' => array(
 				'required_role' => self::PUBLIC_ACCESS,
 				'params' => array(
@@ -164,19 +158,12 @@ class Tab extends Controller {
 	 */
 	public function getTabsByUploader() {
 		$tab_model = $this->load_model('TabModel');
-		$data = $tab_model->getTabsByUploader($this->params['uploader_id'], $this->params['limit'], $this->params['offset']);
-		$this->sendResponse(1, $data);
+		$tabs = $tab_model->getTabsByUploader($this->params['uploader_id'], $this->params['limit'], $this->params['offset']);
+		$total = $tab_model->getTotalTabsByUploader($this->params['uploader_id']);
+
+		$this->sendResponse(1, array('results' => $tabs, 'total' => $total));
 	}
-	
-	/**
-	 * Returns the total number of user tabs
-	 */
-	public function getTotalTabsByUploader() {
-		$tab_model = $this->load_model('TabModel');
-		$data = $tab_model->getTotalTabsByUploader($this->params['uploader_id']);
-		$this->sendResponse(1, $data);
-	}
-	
+		
 	/**
 	 * Returns the tab data
 	 */
