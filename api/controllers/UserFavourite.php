@@ -17,12 +17,6 @@ class UserFavourite extends Controller {
 					'offset' => 'int'
 				)
 			),
-			'getTotalUserFavourites' => array(
-				'required_role' => self::LOGGED_IN_USER,
-				'params' => array(
-					'user_id' => 'int'
-				)
-			),
 			'deleteFavouriteTab' => array(
 				'required_role' => self::LOGGED_IN_USER,
 				'params' => array(
@@ -50,19 +44,10 @@ class UserFavourite extends Controller {
 	 */
 	public function getUserFavourites() {
 		$user_favourite_model = $this->load_model('UserFavouriteModel');
-		$data = $user_favourite_model->getUserFavourites($this->params['user_id'], $this->params['limit'], $this->params['offset']);
+		$tabs = $user_favourite_model->getUserFavourites($this->params['user_id'], $this->params['limit'], $this->params['offset']);
+		$total = $user_favourite_model->getTotalUserFavourites($this->params['user_id']);
 
-		$this->sendResponse(1, $data);
-	}
-
-	/**
-	 * Returns the total number of favourite tabs for the specified user id
-	 */
-	public function getTotalUserFavourites() {
-		$user_favourite_model = $this->load_model('UserFavouriteModel');
-		$data = $user_favourite_model->getTotalUserFavourites($this->params['user_id']);
-
-		$this->sendResponse(1, $data);
+		$this->sendResponse(1, array('results' => $tabs, 'total' => $total));
 	}
 	
 	/**
@@ -72,7 +57,7 @@ class UserFavourite extends Controller {
 		$user_favourite_model = $this->load_model('UserFavouriteModel');
 		$user_favourite_model->deleteFavouriteTab($_SESSION['user']['ID'] ,$this->params['tab_id']);
 		
-		$this->sendResponse(1, true);
+		$this->sendResponse(1, array('success' => true));
 	}
 	
 	/**
