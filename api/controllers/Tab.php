@@ -48,14 +48,6 @@ class Tab extends Controller {
 					'offset' => 'int'
 				)
 			),
-			'getSearchTotal' => array(
-				'required_role' => self::PUBLIC_ACCESS,
-				'params' => array(
-					'type' => 'in[all,tab,chord,gp,bass,bt]',
-					'band' => 'required[band,song]',
-					'song' => 'required[band,song]'
-				)
-			),
 			'getTabsByUploader' => array(
 				'required_role' => self::LOGGED_IN_USER,
 				'params' => array(
@@ -140,17 +132,9 @@ class Tab extends Controller {
 	 */
 	public function search() {
 		$tab_model = $this->load_model('TabModel');
-		$data = $tab_model->search($this->params['type'], $this->params['band'], $this->params['song'], $this->params['limit'], $this->params['offset']);
-		$this->sendResponse(1, $data);
-	}
-
-	/**
-	 * Returns the total number of tabs that match the specified search criterias
-	 */
-	public function getSearchTotal() {
-		$tab_model = $this->load_model('TabModel');
-		$data = $tab_model->getSearchTotal($this->params['type'], $this->params['band'], $this->params['song']);
-		$this->sendResponse(1, $data);
+		$tabs = $tab_model->search($this->params['type'], $this->params['band'], $this->params['song'], $this->params['limit'], $this->params['offset']);
+		$total = $tab_model->getSearchTotal($this->params['type'], $this->params['band'], $this->params['song']);
+		$this->sendResponse(1, array('results' => $tabs, 'total' => $total));
 	}
 	
 	/**
