@@ -36,6 +36,34 @@ class UserFavouriteModel {
 		
 		return $data;
 	}
+
+	/**
+	 * Returns the favourite tab for the specified user_id and tab_id
+	 * @param int $user_id
+	 * @param int $tab_id
+	 * @return array
+	 */
+	public function getUserFavourite($user_id, $tab_id) {
+		$data = array();
+		
+		$query = $this->connection->prepare('SELECT tab.ID, tab.tab_type, tab.type, tab.band, tab.song, user_favourite.date '
+				. 'FROM user_favourite, tab '
+				. 'WHERE user_ID = :user_id AND tab_ID = :tab_id AND user_favourite.tab_ID = tab.ID '
+				. 'ORDER BY user_favourite.date DESC, user_favourite.ID ASC');
+		
+		$params = array('user_id' => $user_id, 'tab_id' => $tab_id);
+		$query->execute($params);
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+
+		if($row){
+			//convert the date to javascript friendly format
+			$row['date'] = Utils::formatDate($row['date']);
+			
+			return $row;
+		}else{
+			return null;
+		}
+	}
 	
 	/**
 	 * Returns the total number of favourite tabs for the specified user_id

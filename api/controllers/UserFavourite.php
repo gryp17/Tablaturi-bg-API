@@ -28,6 +28,12 @@ class UserFavourite extends Controller {
 				'params' => array(
 					'tab_id' => 'int'
 				)
+			),
+			'isFavouriteTab' => array(
+				'required_role' => self::LOGGED_IN_USER,
+				'params' => array(
+					'tab_id' => 'int'
+				)
 			)
 		);
 		
@@ -68,6 +74,17 @@ class UserFavourite extends Controller {
 		$user_favourite_model = $this->load_model('UserFavouriteModel');
 		$result = $user_favourite_model->addFavouriteTab($_SESSION['user']['ID'] ,$this->params['tab_id']);
 		
+		$this->sendResponse(1, $result);
+	}
+
+	/**
+	 * Checks if the tab is in the favourite tabs list
+	 */
+	public function isFavouriteTab() {
+		$user_favourite_model = $this->load_model('UserFavouriteModel');
+		$tab = $user_favourite_model->getUserFavourite($_SESSION['user']['ID'] ,$this->params['tab_id']);
+		$result = isset($tab);
+
 		$this->sendResponse(1, $result);
 	}
 	
