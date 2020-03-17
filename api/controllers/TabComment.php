@@ -17,12 +17,6 @@ class TabComment extends Controller {
 					'offset' => 'int'
 				)
 			),
-			'getTotalTabComments' => array(
-				'required_role' => self::PUBLIC_ACCESS,
-				'params' => array(
-					'tab_id' => 'int'
-				)
-			),
 			'addTabComment' => array(
 				'required_role' => self::LOGGED_IN_USER,
 				'params' => array(
@@ -45,19 +39,10 @@ class TabComment extends Controller {
 	 */
 	public function getTabComments() {
 		$tab_comment_model = $this->load_model('TabCommentModel');
-		$data = $tab_comment_model->getTabComments($this->params['tab_id'], $this->params['limit'], $this->params['offset']);
+		$comments = $tab_comment_model->getTabComments($this->params['tab_id'], $this->params['limit'], $this->params['offset']);
+		$total = $tab_comment_model->getTotalTabComments($this->params['tab_id']);
 
-		$this->sendResponse(1, $data);
-	}
-
-	/**
-	 * Returns the total number of comments for the specified tab id
-	 */
-	public function getTotalTabComments() {
-		$tab_comment_model = $this->load_model('TabCommentModel');
-		$data = $tab_comment_model->getTotalTabComments($this->params['tab_id']);
-
-		$this->sendResponse(1, $data);
+		$this->sendResponse(1, array('results' => $comments, 'total' => $total));
 	}
 	
 	/**
@@ -84,7 +69,7 @@ class TabComment extends Controller {
 				}
 			}
 			
-			$this->sendResponse(1, $result);
+			$this->sendResponse(1, array('success' => true));
 		} else {
 			$this->sendResponse(0, ErrorCodes::DB_ERROR);
 		}
