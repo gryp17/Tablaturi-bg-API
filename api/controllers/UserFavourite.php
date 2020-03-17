@@ -74,7 +74,7 @@ class UserFavourite extends Controller {
 		$user_favourite_model = $this->load_model('UserFavouriteModel');
 		$result = $user_favourite_model->addFavouriteTab($_SESSION['user']['ID'] ,$this->params['tab_id']);
 		
-		$this->sendResponse(1, $result);
+		$this->sendResponse(1, array('success' => true));
 	}
 
 	/**
