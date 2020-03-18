@@ -69,6 +69,12 @@ class Tab extends Controller {
 					'rating' => array('int', 'in[1,2,3,4,5]')
 				)
 			),
+			'tabIsRated' => array(
+				'required_role' => self::LOGGED_IN_USER,
+				'params' => array(
+					'tab_id' => 'int'
+				)
+			),
 			'getTextTabFile' => array(
 				'required_role' => self::PUBLIC_ACCESS,
 				'params' => array(
@@ -176,6 +182,16 @@ class Tab extends Controller {
 			$user_model->giveReputation($_SESSION['user']['ID'], 1);
 		}
 		
+		$this->sendResponse(1, array('success' => $result));
+	}
+
+	/**
+	 * Checks if the tab has already been rated
+	 */
+	public function tabIsRated() {
+		$tab_model = $this->load_model('TabModel');
+		$result = $tab_model->tabIsRated($_SESSION['user']['ID'], $this->params['tab_id']);
+
 		$this->sendResponse(1, $result);
 	}
 	

@@ -342,11 +342,7 @@ class TabModel {
 	 * @return boolean
 	 */
 	public function rateTab($user_id, $tab_id, $rating){
-		$check_query = $this->connection->prepare('SELECT * FROM tab_rating WHERE tab_ID = :tab_id AND user_ID = :user_id');
-		$check_query->execute(array('tab_id' => $tab_id, 'user_id' => $user_id));
-		$row = $check_query->fetch();
-		
-		if($row){
+		if($this->tabIsRated($user_id, $tab_id)){
 			return false;
 		}else{
 			$query = $this->connection->prepare('INSERT INTO tab_rating (tab_ID, user_ID, rating, date) VALUES (:tab_id, :user_id, :rating, now())');
@@ -358,6 +354,24 @@ class TabModel {
 			return true;
 		}
 
+	}
+
+	/**
+	 * Checks if the tab has already been rated by the user
+	 * @param int $user_id
+	 * @param int $tab_id
+	 * @return boolean
+	 */
+	public function tabIsRated($user_id, $tab_id){
+		$check_query = $this->connection->prepare('SELECT * FROM tab_rating WHERE tab_ID = :tab_id AND user_ID = :user_id');
+		$check_query->execute(array('tab_id' => $tab_id, 'user_id' => $user_id));
+		$row = $check_query->fetch();
+		
+		if ($row) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	
