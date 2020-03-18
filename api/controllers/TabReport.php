@@ -40,7 +40,7 @@ class TabReport extends Controller {
 			Utils::sendTabReportEmail($reported_tab, $_SESSION['user'], $this->params['report']);
 		}
 		
-		$this->sendResponse(1, true);
+		$this->sendResponse(1, array('success' => true));
 	}
 	
 
