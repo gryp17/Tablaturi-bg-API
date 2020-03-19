@@ -43,7 +43,7 @@ class UserActivationModel {
 		
 	/**
 	 * Checks if the provided user_id/hash combination is valid
-	 * Also checks if 24 hours have passed since the activation link was sent
+	 * Also checks if 72 hours have passed since the activation link was sent
 	 * @param int $user_id
 	 * @param string $hash
 	 * @return boolean
@@ -57,8 +57,8 @@ class UserActivationModel {
 		if ($row) {
 			$activation_date = strtotime($row['date']);
 
-			//if 24 hours haven't passed
-			if((time()-(60*60*24)) < $activation_date){
+			//if 72 hours haven't passed
+			if((time()-(60*60*72)) < $activation_date){
 				return true;
 			}else{
 				return false;
