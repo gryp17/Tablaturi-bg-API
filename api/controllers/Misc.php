@@ -15,7 +15,7 @@ class Misc extends Controller {
 			'contactUs' => array(
 				'required_role' => self::PUBLIC_ACCESS,
 				'params' => array(
-					'username' => array('min-3', 'max-20', 'valid-characters'),
+					'username' => array('min-3', 'max-20'),
 					'email' => 'valid-email',
 					'message' => 'required',
 					'captcha' => 'matches-captcha'
