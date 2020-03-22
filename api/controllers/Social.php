@@ -67,8 +67,7 @@ class Social extends Controller {
 			$open_graph_data['image'] = 'http://'.Config::DOMAIN.'/static/img/logo-tablaturi-bg-small.png';
 		}
 		
-		//TODO: reimplement this using a folder inside the API?
-		//$this->load_view('social/open-graph', $open_graph_data);
+		$this->load_view('open-graph', $open_graph_data);
 	}
 
 

@@ -33,7 +33,7 @@ class Utils {
 	 * @return string
 	 */
 	private static function loadEmailTemplate($template_file, $data){
-		$email_templates_dir = Config::EMAIL_TEMPLATES_DIR;
+		$email_templates_dir = Config::TEMPLATES_DIR.'emails/';
 		
 		//load the template file
 		ob_start();

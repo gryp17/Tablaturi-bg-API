@@ -176,19 +176,13 @@ class Controller {
 	 * @param String $view
 	 * @param Array $data
 	 */
-
-	/*
-	TODO: delete
-	NOT NEEDED FOR NOW
-
 	public function load_view($view, $data = array()) {
-		if (file_exists("dist/$view.php")) {
-			require_once "dist/$view.php";
+		if (file_exists(Config::TEMPLATES_DIR."$view.php")) {
+			require_once Config::TEMPLATES_DIR."$view.php";
 		} else {
-			require_once "dist/$view.html";
+			require_once Config::TEMPLATES_DIR."$view.html";
 		}
 	}
-	*/
 
 	/**
 	 * Sanitizes the provided data
