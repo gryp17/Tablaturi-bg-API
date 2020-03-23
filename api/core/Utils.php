@@ -23,6 +23,9 @@ class Utils {
 		$headers .= "Return-Path: $from\r\n";
 		$headers .= "X-Mailer: PHP \r\n";
 
+		//abv.bg specific hack for displaying the email subject (in cyrilic) correctly
+		$encoded_subject = "=?UTF-8?B?".base64_encode($subject)."?=\n";
+
 		return mail($to, $subject, $message, $headers);
 	}
 	
