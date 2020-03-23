@@ -1,7 +1,7 @@
 # Tablaturi-bg-API
 
 Custom PHP API for [Tablaturi-BG](http://tablaturi-bg.com) - the biggest website for guitar tabs in Bulgaria.
-The API uses a MySQL database.
+The API uses a MySQL database. The API was created to be used with the latest [Tablaturi-BG VueJS front end](https://github.com/gryp17/Tablaturi-bg-VueJS).
 
 ## Installation
 
