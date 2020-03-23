@@ -26,7 +26,7 @@ class Utils {
 		//abv.bg specific hack for displaying the email subject (in cyrilic) correctly
 		$encoded_subject = "=?UTF-8?B?".base64_encode($subject)."?=\n";
 
-		return mail($to, $subject, $message, $headers);
+		return mail($to, $encoded_subject, $message, $headers);
 	}
 	
 	/**
