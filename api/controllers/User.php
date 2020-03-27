@@ -202,11 +202,11 @@ class User extends Controller {
 			if ($user_data['activated'] === 1) {
 				$this->sendResponse(0, array('field' => 'email', 'error_code' => ErrorCodes::EMAIL_ALREADY_ACTIVATED));
 			} else {
-				$activation = $this->generateActivationLink($user_data['id'], $this->params['email']);
+				$activation = $this->generateActivationLink($user_data['ID'], $this->params['email']);
 
 				//insert the activation data into the database
 				$user_activation_model = $this->load_model('UserActivationModel');
-				$user_activation_model->insertHash($user_data['id'], $activation['hash']);
+				$user_activation_model->insertHash($user_data['ID'], $activation['hash']);
 
 				//send the confirmation email
 				if (Utils::sendConfirmationEmail($user_data['username'], $this->params['email'], $activation['link'])) {
