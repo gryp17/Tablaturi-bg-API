@@ -154,8 +154,14 @@ class UserModel {
 	 * @param string $email
 	 * @return array
 	 */
-	public function getUserByEmail($email){
-		$query = $this->connection->prepare('SELECT * FROM user WHERE email = :email AND activated = 1');
+	public function getUserByEmail($email, $active_only = true){
+		$query = 'SELECT * FROM user WHERE email = :email';
+
+		if ($active_only) {
+			$query = "$query AND activated = 1";
+		}
+
+		$query = $this->connection->prepare($query);
 		$params = array('email' => $email);
 		$query->execute($params);
 

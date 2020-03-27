@@ -44,6 +44,12 @@ class User extends Controller {
 					'captcha' => 'matches-captcha'
 				)
 			),
+			'resendUserActivation' => array(
+				'required_role' => self::PUBLIC_ACCESS,
+				'params' => array(
+					'email' => array('required', 'valid-email')
+				)
+			),
 			'getUser' => array(
 				'required_role' => self::LOGGED_IN_USER,
 				'params' => array(
@@ -182,6 +188,36 @@ class User extends Controller {
 			}
 		}else{
 			$this->sendResponse(0, ErrorCodes::DB_ERROR);
+		}
+	}
+
+	/**
+	 * Resends the user activation email
+	 */
+	public function resendUserActivation() {
+		$user_model = $this->load_model('UserModel');
+		$user_data = $user_model->getUserByEmail($this->params['email'], false);
+
+		if($user_data !== null){
+			if ($user_data['activated'] === 1) {
+				$this->sendResponse(0, array('field' => 'email', 'error_code' => ErrorCodes::EMAIL_ALREADY_ACTIVATED));
+			} else {
+				$activation = $this->generateActivationLink($user_data['id'], $this->params['email']);
+
+				//insert the activation data into the database
+				$user_activation_model = $this->load_model('UserActivationModel');
+				$user_activation_model->insertHash($user_data['id'], $activation['hash']);
+
+				//send the confirmation email
+				if (Utils::sendConfirmationEmail($user_data['username'], $this->params['email'], $activation['link'])) {
+					$this->sendResponse(1, array('success' => true));
+				} else {
+					$this->sendResponse(0, ErrorCodes::EMAIL_ERROR);
+				}
+			}
+			
+		}else{
+			$this->sendResponse(0, array('field' => 'email', 'error_code' => ErrorCodes::EMAIL_NOT_FOUND));
 		}
 	}
 	

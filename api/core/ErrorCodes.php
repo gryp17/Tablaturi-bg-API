@@ -27,6 +27,7 @@ class ErrorCodes {
 	const EXCEEDS_MAX_FILE_SIZE = 'exceeds_max_file_size';
 	const INVALID_FILE_EXTENSION = 'invalid_file_extension';
 	const EMAIL_NOT_FOUND = 'email_not_found';
+	const EMAIL_ALREADY_ACTIVATED = 'email_already_activated';
 	const INVALID_LOGIN = 'invalid_login';
 	const INVALID_OR_EXPIRED_TOKEN = 'invalid_or_expired_token';
 

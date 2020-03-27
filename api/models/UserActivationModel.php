@@ -15,6 +15,9 @@ class UserActivationModel {
 	 * @return boolean
 	 */
 	public function insertHash($user_id, $hash) {
+		//delete any activation records for this user (in order to avoid multiple/old records for the same user)
+		$this->deleteHash($user_id);
+
 		$query = $this->connection->prepare('INSERT INTO user_activation (user_ID, hash, date) VALUES (:user_id, :hash, now())');
 		return $query->execute(array('user_id' => $user_id, 'hash' => $hash));
 	}
