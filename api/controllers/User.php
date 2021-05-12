@@ -101,11 +101,19 @@ class User extends Controller {
 
 			//if the remember me option is set to true - keep the user session for 90 days	
 			if (isset($this->params['remember_me']) && $this->params['remember_me']) {
-				setcookie(session_name(), session_id(), strtotime('+90 days'), '/');
+				setcookie(session_name(), session_id(), array(
+					'expires' => strtotime('+90 days'),
+					'path' => '/',
+					'samesite' => 'Lax'
+				));
 			}
 			//otherwise keep until the browser is closed (default)
 			else {
-				setcookie(session_name(), session_id(), 0, '/');
+				setcookie(session_name(), session_id(), array(
+					'expires' => 0,
+					'path' => '/',
+					'samesite' => 'Lax'
+				));
 			}
 
 			$_SESSION['user'] = $data;
